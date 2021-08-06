@@ -1,0 +1,187 @@
+﻿@model ComplaintManagement.Models.ComplaintDTO
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>New Complaint</h2>
+
+<div class="container x_panel">
+    <div class="row form-group">
+        <div class="col-lg-12">
+            <div class="row">
+                <div class="col-lg-6 col-md-6  col-sm-6  col-xs-6">
+                    <h4>Title</h4>
+                </div>
+                <div class="col-lg-3 col-md-2  col-sm-2  col-xs-6">
+                    <input type="text" class="form-control" id="txtTitle" />
+                </div>
+                <span id="txtTitleError" style="display:none;"><span class="validation-error" style="margin-right: 20px;color:#fff;background: #f58d8d;">Field Required</span></span>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-lg-6 col-md-6  col-sm-6  col-xs-6">
+                    <h4>Description</h4>
+                </div>
+                <div class="col-lg-3 col-md-2  col-sm-2  col-xs-6">
+                    <textarea rows="4" cols="50" class="form-control" id="txtDescription"></textarea>
+                </div>
+                <span id="txtDescriptionError" style="display:none;"><span class="validation-error" style="margin-right: 20px;color:#fff;background: #f58d8d;">Field Required</span></span>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-lg-6 col-md-6  col-sm-6  col-xs-6">
+                    <h4>Choose a time for your Complaint:</h4>
+                </div>
+                <div class="col-lg-3 col-md-2  col-sm-2  col-xs-6">
+                    <input type="text" class="form-control" data-role="DatePicker" data-date-format="dd/mm/yyyy" id="txtTimeOfComplaint" required />
+                </div>
+                <span id="TimeOfComplaintError" style="display:none;"><span class="validation-error" style="margin-right: 20px;color:#fff;background: #f58d8d;">Field Required</span></span>
+
+            </div>
+            <br />
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-lg-6 col-md-6  col-sm-6  col-xs-6">
+                        <h4 class="control-label">Complain about</h4>
+                    </div>
+                    <div class="col-lg-6 col-md-6  col-sm-6  col-xs-6">
+                        <select id="ddlComplainAbout" class="form-control js-example-basic-multiple select2" multiple="multiple">
+                            <option value="">Select Data</option>
+                            @foreach (var item in Model.DepartmentList)
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
+                        </select>
+                        <span id="ddlComplainAboutError" style="display:none;"><span class="validation-error" style="margin-right: 20px;color:#fff;background: #f58d8d;">Field Required</span></span>
+                    </div>
+                </div>
+            </div>
+            <br /> <br />
+            <div class="row">
+                <div class="col-lg-6 col-md-6  col-sm-6  col-xs-6">
+                    <h4 class="control-label">Who Can See This Complain :</h4>
+                    <span id="checkboxesError" style="display:none;"><span class="validation-error" style="margin-right: 20px;color:#fff;background: #f58d8d;">Select at least one please!</span></span>
+
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6  col-sm-6  col-xs-6">
+                            <input type="checkbox" id="ToTeamLeader" name="ToTeamLeader">
+                            <label class="control-label">To Team Leader</label>
+                        </div>
+                        <div class="col-lg-6 col-md-6  col-sm-6  col-xs-6">
+                            <input type="checkbox" id="ToManager" name="ToManager">
+                            <label class="control-label">To Manager</label>
+                        </div>
+                        <div class="col-lg-6 col-md-6  col-sm-6  col-xs-6">
+                            <input type="checkbox" id="ToHr" name="ToHr">
+                            <label class="control-label">To Hr</label>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <br /> <br />
+            <div class="form-group col-sm-12">
+                <h4 class="control-label">Where The Complaint Done :</h4>
+                <div class="form-group col-sm-6">
+                    <input id="InCompany" type="radio" name="InCompany" value="0" checked="checked">
+                    <label for="InCompany">In Company</label>
+                </div>
+                <div class="form-group col-sm-6">
+                    <input id="InCompany" type="radio" name="InCompany">
+                    <label for="InCompany">Out Company</label>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-lg-12 pull-left">
+            <div class="row x_title" style="padding-bottom: 60px">
+                <div class="col-lg-3 col-md-3 col-sm-2  col-xs-2 " style="padding-top: 50px;">
+                    <button class="btn btn-success" name="SaveComplaint" id="SaveComplaint" type="button" onclick="SaveComplaint()"><span class="glyphicon glyphicon-floppy-save"></span>Save</button>
+                    <a href="@Url.Action("ComplaintList", "ComplaintRequest" )" class="btn btn-danger">Cancel</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $(".js-example-basic-multiple").select2({
+      placeholder: "Choose",});
+    $("#txtTimeOfComplaint").datepicker();
+
+    function SaveComplaint(){
+        debugger;
+        clearForm();
+
+        if (!isValid()) {
+            return false;
+        }
+        var complaint = getDataObjetct();
+        $.ajax({
+            type: "POST",
+            async: false,
+            url: '@Url.Action("SaveComplaint")',
+            data: { complaint: complaint },
+              success: function (data) {
+            },
+            error: function (data) {
+                return false;
+            }
+        });
+    }
+
+    function getDataObjetct() {
+        debugger;
+        var obj = {};
+        obj.Title = $("#txtTitle").val();
+        obj.Description = $("#txtDescription").val();
+        obj.ToHr = $("#ToHr").is(":checked");
+        obj.ToManager = $("#ToManager").is(":checked");
+        obj.ToTeamLeader = $("#ToTeamLeader").is(":checked");
+        obj.DepartmentID = $('#ddlDepartmentList').val();
+        obj.Complain_List = $('#ddlComplainAbout').val();
+        obj.InCompany = $('#InCompany').val();
+        obj.TimeOfComplaint = $('#txtTimeOfComplaint').val();
+        return obj;
+    }
+
+
+    function isValid() {
+        debugger;
+        var result = true;
+        if ($("#txtTitle").val() == "") {
+            $('#txtTitleError').show();
+            result = false;
+        }
+        if ($("#txtDescription").val() == "") {
+            $('#txtDescriptionError').show();
+            result = false;
+        }
+        if ($('#ddlComplainAbout').val() == [] || $('#ddlComplainAbout').val() == '' ) {
+            $('#ddlComplainAboutError').show();
+            result = false;
+        }
+        if (!($('#ToTeamLeader').is(":checked") || $('#ToManager').is(":checked") || $('#ToHr').is(":checked"))) {
+            $('#checkboxesError').show();
+            result = false;
+        }
+        if ($('#txtTimeOfComplaint').val() == "") {
+            $('#TimeOfComplaintError').show();
+            result = false;
+        }
+
+        return result;
+    }
+
+    function clearForm() {
+        $('#txtTitleError').hide();
+        $('#txtDescriptionError').hide();
+        $('#ddlComplainAboutError').hide();
+        $('#checkboxesError').hide();
+        $('#TimeOfComplaintError').hide();
+    }
+
+</script>

@@ -1,0 +1,75 @@
+﻿@using ComplaintManagement.Models
+@using DataAccess.Enum
+@model List<ComplaintDTO>
+@{
+    ViewBag.Title = "Complaint List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@if (Convert.ToInt32(Session["UserRole"]) == (int)UserRole.Employee)
+{
+    <div class='btn-group text-center' style="float:left;">
+        <a class="btn btn-primary pull-right add_btn" style="line-height: 2em;" href="@Url.Action("Create", "ComplaintRequest")">Create New Complaint</a>
+    </div>
+}
+<div id="divTableData">
+    <div class="scrollableTable">
+        <table class="table" id="ideasTable">
+            <thead>
+                <tr>
+                    <th style="display:none;">Id</th>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Department</th>
+                    <th>Manager</th>
+                    <th>HR</th>
+                    <th>Team Leader</th>
+                    <th>In Company</th>
+                    <th>Status</th>
+                    @if (Convert.ToInt32(Session["UserRole"]) == (int)UserRole.Admin || Convert.ToInt32(Session["UserRole"]) == (int)UserRole.MxAdmin)
+                    {
+                        <th>Action</th>
+                    }
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <th style="display:none;">@item.id</th>
+                        <td>@item.Title</td>
+                        <td>@item.Description</td>
+                        <td>
+                            @{
+                                if (item.DepartmentList.Count > 0)
+                                {
+                                    foreach (var itemDept in item.DepartmentList)
+                                    {
+                                        @(itemDept.Value + '-' +  itemDept.Text)
+                                        <br />
+                                    }
+                                }
+                            }
+                        </td>
+                        <td>@(item.ToManager ? "Yes" : "No")</td>
+                        <td>@(item.ToHr ? "Yes" : "No")</td>
+                        <td>@(item.ToTeamLeader ? "Yes" : "No")</td>
+                        <td>@(item.InCompany == "1" ? "Yes" : "No")</td>
+                        <td>@item.Status</td>
+                        @if (Convert.ToInt32(Session["UserRole"]) == (int)UserRole.Admin || Convert.ToInt32(Session["UserRole"]) == (int)UserRole.MxAdmin)
+                        {
+                            <td>
+                                @if (item.Status == Status.Pending.ToString())
+                                {
+                                    <a href="@Url.Action("ChangeStatus", "ComplaintRequest", new { id = item.id, newStatus = (int)Status.Resolved })" class='btn-xs btn-primary'>Resolved</a>
+                                    <a href="@Url.Action("ChangeStatus", "ComplaintRequest", new { id = item.id , newStatus = (int)Status.Dismissed})" class='btn-xs btn-danger'>Dismissed</a>
+                                }
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

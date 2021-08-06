@@ -1,0 +1,35 @@
+﻿@using ComplaintManagement.Models
+@model UserDTO
+@{
+    Layout = "~/Views/Shared/_AnnonymousLayout.cshtml";
+}
+
+
+    <form action="User" method="post">
+        <div class="container box">
+            <div class="row">
+
+                <div class="col-lg-12 col-md-12">
+                    @{ if (ViewData["Message"] != null)
+                        {
+                            <div id="popupdiv" class="alert alert-danger">
+                                <h2> User Name or password is wrong</h2>
+                            </div>
+                        }
+                    }
+                    <div class="form-group inputBox">
+                        @Html.LabelFor(a => a.Email, "Email")
+                        @Html.TextBoxFor(a => a.Email, new { @class = "form-control" })
+                    </div>
+                    <div class="form-group inputBox">
+                        @Html.LabelFor(a => a.Password, "Password")
+                        @Html.PasswordFor(a => a.Password, new { @class = "form-control" })
+                    </div>
+                    <button class="btn btn-success" name="Login" type="submit">Login</button>
+                    <button class="btn btn-info" name="Register" type="submit">Create New Account!</button>
+
+                </div>
+            </div>
+        </div>
+    </form>
+

@@ -1,0 +1,83 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Annonymous - PwC</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+
+    <style type="text/css">
+        body {
+            font-family: sans-serif;
+            background-image: url('../../company-7.jpg');
+            background-size: cover;
+        }
+
+        .box {
+            margin-top: 200px;
+            margin-left: 500px;
+            width: 200px;
+            padding: 40px;
+            background: rgba(0,0,0,0.8);
+            /*box-sizing: border-box;*/
+            box-shadow: 0 15px 25px rgba(0,0,0,0.5);
+            border-radius: 10px;
+        }
+
+            .box h2 {
+                margin: 0 0 30px;
+                padding: 0;
+                color: #FF0000;
+                text-align: center;
+            }
+
+            .box .inputBox input {
+                width: 100%;
+                padding: 10px 0;
+                font-size: 16px;
+                color: #fff;
+                letter-spacing: 2px;
+                margin-bottom: 30px;
+                border: none;
+                border-bottom: 1px solid #fff;
+                outline: none;
+                background: transparent;
+            }
+
+            .box .inputBox label {
+                font-size: 16px;
+                color: #fff;
+                letter-spacing: 2px;
+            }
+
+            .box input[type=button] {
+                background: transparent;
+                border: none;
+                outline: none;
+                color: #fff;
+                background: #03a9f4;
+                padding: 10px 20px;
+                cursor: pointer;
+                border-radius: 5px;
+            }
+    </style>
+
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+
+    @RenderSection("head", false)
+</head>
+<body>
+    @RenderBody()
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

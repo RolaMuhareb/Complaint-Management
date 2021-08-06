@@ -1,0 +1,55 @@
+﻿@model ComplaintManagement.Models.UserDTO
+
+@{
+    Layout = "~/Views/Shared/_AnnonymousLayout.cshtml";
+}
+
+
+<form action="SaveUser" method="post">
+    <div class="container box">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="form-group inputBox">
+                    @Html.LabelFor(a => a.UserName)
+                    @Html.TextBoxFor(a => a.UserName, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
+
+                </div>
+                <div class="form-group inputBox">
+                    @Html.LabelFor(a => a.Email)
+                    @Html.TextBoxFor(a => a.Email, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+
+                </div>
+                <div class="form-group inputBox">
+                    @Html.LabelFor(a => a.Number)
+                    @Html.TextBoxFor(a => a.Number, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Number, "", new { @class = "text-danger" })
+
+                </div>
+                <div class="form-group inputBox">
+                    @Html.LabelFor(a => a.Password)
+                    @Html.PasswordFor(a => a.Password, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+
+                </div>
+                <div class="form-group inputBox">
+                    @Html.LabelFor(a => a.ConfirmPassword)
+                    @Html.PasswordFor(a => a.ConfirmPassword, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
+
+                </div>
+                <button type="submit" class="btn btn-success" id="save" name="SaveUser">Save</button>
+                <a class="btn btn-danger" href="@Url.Action("Login", "User" )">Back</a>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+@section scripts {
+
+    <script src="~/Scripts/jquery-3.4.1.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+}
